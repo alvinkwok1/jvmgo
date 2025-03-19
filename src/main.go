@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"main/classpath"
+	"strings"
 )
 
 func main() {
@@ -18,4 +20,12 @@ func main() {
 func startJVM(cmd *Cmd) {
 	fmt.Printf("starting JVM...\n")
 	fmt.Printf("Classpath: %s, class: %s, args: %v\n", cmd.cpOption, cmd.class, cmd.args)
+	cp := classpath.Parse(cmd.jreOption, cmd.cpOption)
+	className := strings.Replace(cmd.class, `.`, `/`, -1)
+	classData, _, err := cp.ReadClass(className)
+	if err != nil {
+		fmt.Printf("Could not find or load main class %s\n", cmd.class)
+		return
+	}
+	fmt.Printf("class: %s\n,class data:%v", className, classData)
 }
