@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"main/classfile"
 	"main/classpath"
 	"strings"
 )
@@ -27,5 +28,11 @@ func startJVM(cmd *Cmd) {
 		fmt.Printf("Could not find or load main class %s\n", cmd.class)
 		return
 	}
-	fmt.Printf("class: %s\n,class data:%v", className, classData)
+	fmt.Printf("class: %s\n,class data:%v\n", className, classData)
+	// 解析类
+	cf, err := classfile.Parse(classData)
+	if err != nil {
+		fmt.Printf("Error in parsing classfile: %v\n", err)
+	}
+	fmt.Printf("cf:%#v\n", cf)
 }
