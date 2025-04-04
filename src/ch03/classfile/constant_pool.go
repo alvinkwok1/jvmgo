@@ -21,13 +21,24 @@ func (self ConstantPool) getConstantInfo(index uint16) ConstantInfo {
 	panic("Invalid constant pool index !")
 }
 
-//
-//func (self ConstantPool) getClassName(index uint16) string {
-//	classInfo := self.getConstantInfo(index).(*C)
-//}
+/**
+ * 从常量池中查找指定索引的类名
+ */
+func (self ConstantPool) getClassName(index uint16) string {
+	classInfo := self.getConstantInfo(index).(*ConstantClassInfo)
+	return self.getUtf8(classInfo.nameIndex)
+}
 
 // 从常量池中查找指定索引的utf8字符串
 func (self ConstantPool) getUtf8(index uint16) string {
 	utf8Info := self.getConstantInfo(index).(*ConstantUtf8Info)
 	return utf8Info.str
+}
+
+// 从常量池中查找指定索引的字段名和描述符
+func (self ConstantPool) getNameAndType(index uint16) (string, string) {
+	ntInfo := self.getConstantInfo(index).(*ConstantNameAndTypeInfo)
+	name := self.getUtf8(ntInfo.nameIndex)
+	_type := self.getUtf8(ntInfo.descriptorIndex)
+	return name, _type
 }

@@ -7,6 +7,7 @@ package classfile
 // 代码点大于  U+FFFF的Unicode字符)是按UTF-16拆分为代理对(Surrogate Pair)  分别编码的。
 // 具体细节超出了本章的讨论范围,有兴趣的读者可以  阅读Java虚拟机规范和Unicode规范的相关章节
 // TODO 需要研究下怎么解析的UTF8
+// CONSTANT_Utf8_info { u1 tag; u2 length; u1 bytes[length]; }
 type ConstantUtf8Info struct {
 	str string
 }
