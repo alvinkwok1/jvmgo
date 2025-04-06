@@ -34,5 +34,24 @@ func startJVM(cmd *Cmd) {
 	if err != nil {
 		fmt.Printf("Error in parsing classfile: %v\n", err)
 	}
-	fmt.Printf("cf:%#v\n", cf)
+	printClassInfo(cf)
+}
+
+func printClassInfo(cf *classfile.ClassFile) {
+	fmt.Printf("magic: %x\n", cf.Magic())
+	fmt.Printf("minor version: %d\n", cf.MinorVersion())
+	fmt.Printf("major version: %d\n", cf.MajorVersion())
+	fmt.Printf("constant pool count: %d\n", len(cf.ConstantPool()))
+	fmt.Printf("access flags: %x\n", cf.AccessFlags())
+	fmt.Printf("this class: %v\n", cf.ClassName())
+	fmt.Printf("super class: %v\n", cf.SuperClassName())
+	fmt.Printf("interfaces count: %v\n", cf.InterfaceNames())
+	fmt.Printf("fields count: %v\n", len(cf.Fields()))
+	for _, field := range cf.Fields() {
+		fmt.Printf("%s\n", field.Name())
+	}
+	fmt.Printf("methods count: %d\n", len(cf.Methods()))
+	for _, method := range cf.Methods() {
+		fmt.Printf("%s\n", method.Name())
+	}
 }

@@ -8,7 +8,11 @@ func readConstantPool(reader *ClassReader) ConstantPool {
 	cp := make([]ConstantInfo, cpCount)
 	for i := 1; i < cpCount; i++ {
 		cp[i] = readConstantInfo(reader, cp)
-		// TODO 需要处理Long和Double
+		// TODO 需要处理Long和Double,占用两个常量池索引
+		switch cp[i].(type) {
+		case *ConstantLongInfo, *ConstantDoubleInfo:
+			i++
+		}
 	}
 	return cp
 }

@@ -38,7 +38,7 @@ func (self *ClassFile) read(reader *ClassReader) {
 	// 读取版本号信息
 	self.readAndCheckVersion(reader)
 	// 读取常量池
-	self.readConstantPool(reader)
+	self.constantPool = readConstantPool(reader)
 	// 读取访问标志
 	self.accessFlags = reader.readUint16()
 	// 读取类索引
@@ -81,9 +81,8 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	panic("java.lang.UnsupportedClassVersionError")
 }
 
-// 读取常量池
-func (self *ClassFile) readConstantPool(reader *ClassReader) {
-
+func (self *ClassFile) Magic() uint32 {
+	return self.magic
 }
 
 func (self *ClassFile) MinorVersion() uint16 {
@@ -113,7 +112,7 @@ func (self *ClassFile) SuperClassName() string {
 	return self.constantPool.getClassName(self.supperClass)
 }
 
-func (self *ClassFile) Interfaces() []string {
+func (self *ClassFile) InterfaceNames() []string {
 	if self.interfaces == nil {
 		return nil
 	}
